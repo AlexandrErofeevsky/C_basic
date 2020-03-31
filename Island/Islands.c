@@ -12,28 +12,38 @@ typedef struct island{
 void display(island *start){
     island *i = start;
 
-    for
+    for(; i!=NULL; i = i->next){
+        printf("Name: %s; Open: %s-%s\n", i->name,i->opens,i->closes);
+    }
+}
+
+island* create(char *name){
+    island *i = malloc(sizeof(island));
+    i -> name = name;
+    i -> opens = "09:00";
+    i -> closes = "17:00";
+    i -> next = NULL;
+    return i;
 }
 
 int main()
 {
-    island amity = {"Friendship", "09:00", "17:00", NULL}
-    island craggy = {"Rocky", "09:00", "17:00", NULL}
-    island isla_nublar = {"Fog", "09:00", "17:00", NULL}
-    island shitter = {"Cursed", "09:00", "17:00", NULL}
+    island amity = {"Friendship", "09:00", "17:00", NULL};
+    island craggy = {"Rocky", "09:00", "17:00", NULL};
+    island isla_nublar = {"Fog", "09:00", "17:00", NULL};
+    island shutter = {"Cursed", "09:00", "17:00", NULL};
 
     amity.next = &craggy;
-    cruggy.next = &isla_nublar;
+    craggy.next = &isla_nublar;
     isla_nublar.next = &shutter;
 
-    island sckull = {"Skull island", "09:00", "17:00", NULL};
+    island skull = {"Skull island", "09:00", "17:00", NULL};
     isla_nublar.next = &skull;
     skull.next = &shutter;
 
 
-    char str[] = "54321";
-
-    printf("%d\n",fatoi(str));
+    display(&amity);
 
     return 0;
 }
+
