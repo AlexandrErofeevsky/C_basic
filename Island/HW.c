@@ -13,7 +13,7 @@ island* create(island *last){
     printf("Enter new island name: ");
     scanf("%19s", isl_name);
     i -> name = malloc(strlen(isl_name) + 1);
-    i->name = strdup(isl_name);
+    i -> name = strdup(isl_name);
     i -> next = NULL;
     i -> prev = NULL;
 
@@ -26,7 +26,7 @@ island* add(island *last){
     scanf("%19s", isl_name);
     island *i = malloc(sizeof(island));
     i -> name = malloc(strlen(isl_name) + 1);
-    i->name = strdup(isl_name);
+    i -> name = strdup(isl_name);
     i -> prev = last;
     last -> next = i;
     i -> next = NULL;
@@ -41,17 +41,48 @@ void display(island *start){
     printf("\n");
 }
 
+island* del(island *start){
+    island *i = start;
+    island *next = NULL;
+    island *prev = NULL;
+    if(start->prev != NULL){
+        prev = start->prev;
+        start->prev->next = NULL;
+    }
+    for(;i!=NULL;i=next){
+        next = i -> next;
+        free(i -> name);
+        free(i);
+    }
+    return prev;
+}
 
+island* search(island *start, char *name){
+    island *i = start;
+    island *result = NULL;
 
+    for(;i!=NULL;i=i->next){
+        if(strcmp(i->name,name)==0){
+            result = i;
+            break;
+        }
+    }
+    return result;
+}
+
+/*Do not look at empty list after removing first element or the whole list, There is a trouble*/
 int main()
 {
     int n;
+    char se_name[20];
     island *start = NULL;
     island *last = NULL;
     island *i = NULL;
+    island *temp = NULL;
 
     while(1){
         printf("Choose an option:\n1) Create first element\n2) Add last element\n3) Delete last element\n4) Show list\n5) Delete list\n6) Find an element\n7) Quit\n");
+        printf("Your choice: ");
         scanf("%d",&n);
         if(n == 1){
             i = create(last);
@@ -65,28 +96,35 @@ int main()
             last = i;
         }
         if(n == 3){
-            printf("Last element was deleted\n");
+            last = del(last);
             printf("------------------------------------\n");
-
         }
         if(n == 4){
-            display(start);
+            if(start -> name != NULL){
+                display(start);
+            }
             printf("------------------------------------\n");
 
         }
         if(n == 5){
-            printf("Delete\n");
+            last = del(start);
             printf("------------------------------------\n");
-
         }
         if(n == 6){
-            printf("Searching\n");
+            printf("Enter name of an island: ");
+            scanf("%19s", se_name);
+            temp = search(start,se_name);
+            if(temp!=NULL){
+                printf("%s\n",temp->name);
+            }
+            else{
+                printf("No such island\n");
+            }
             printf("------------------------------------\n");
-
         }
         if(n == 7){
-            printf("Quit\n");
-            printf("------------------------------------\n");
+            last = del(start);
+            break;
         }
     }
     return 0;
