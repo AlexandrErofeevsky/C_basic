@@ -42,19 +42,24 @@ void display(island *start){
 }
 
 island* del(island *start){
-    island *i = start;
-    island *next = NULL;
-    island *prev = NULL;
-    if(start->prev != NULL){
-        prev = start->prev;
-        start->prev->next = NULL;
+    if(start!=NULL){
+        island *i = start;
+        island *next = NULL;
+        island *prev = NULL;
+        if(start->prev != NULL){
+            prev = start->prev;
+            start->prev->next = NULL;
+        }
+        for(;i!=NULL;i=next){
+            next = i -> next;
+            free(i -> name);
+            free(i);
+        }
+        return prev;
     }
-    for(;i!=NULL;i=next){
-        next = i -> next;
-        free(i -> name);
-        free(i);
+    else{
+        return NULL;
     }
-    return prev;
 }
 
 island* search(island *start, char *name){
@@ -125,6 +130,9 @@ int main()
         if(n == 7){
             last = del(start);
             break;
+        }
+        else{
+            printf("There is no such option\n------------------------------------\n");
         }
     }
     return 0;
