@@ -43,19 +43,20 @@ void display(island *start){
 
 island* del(island *start){
     if(start!=NULL){
-        island *i = start;
-        island *next = NULL;
-        island *prev = NULL;
-        if(start->prev != NULL){
-            prev = start->prev;
-            start->prev->next = NULL;
-        }
-        for(;i!=NULL;i=next){
-            next = i -> next;
-            free(i -> name);
-            free(i);
-        }
-        return prev;
+            island *i = start;
+            island *next = NULL;
+            island *prev = NULL;
+            if(start->prev != NULL){
+                prev = start->prev;
+                start->prev->next = NULL;
+            }
+            for(;i!=NULL;i=next){
+                next = i -> next;
+                i -> next = NULL;
+                free(i -> name);
+                free(i);
+            }
+            return prev;
     }
     else{
         return NULL;
@@ -75,7 +76,6 @@ island* search(island *start, char *name){
     return result;
 }
 
-/*Do not look at empty list after removing first element or the whole list, There is a trouble*/
 int main()
 {
     int n;
@@ -103,9 +103,12 @@ int main()
         if(n == 3){
             last = del(last);
             printf("------------------------------------\n");
+            if(last == NULL){
+                start = NULL;
+            }
         }
         if(n == 4){
-            if(start -> name != NULL){
+            if(start != NULL){
                 display(start);
             }
             printf("------------------------------------\n");
@@ -114,6 +117,7 @@ int main()
         if(n == 5){
             last = del(start);
             printf("------------------------------------\n");
+            start = NULL;
         }
         if(n == 6){
             printf("Enter name of an island: ");
@@ -123,7 +127,7 @@ int main()
                 printf("%s\n",temp->name);
             }
             else{
-                printf("No such island\n");
+                printf("There is no such island\n");
             }
             printf("------------------------------------\n");
         }
@@ -131,7 +135,7 @@ int main()
             last = del(start);
             break;
         }
-        else{
+        if(n<1||n>7){
             printf("There is no such option\n------------------------------------\n");
         }
     }
